@@ -1,7 +1,7 @@
 import 'package:bitcoin/networking/loading_screen.dart';
 import 'package:flutter/material.dart';
 
-void main(){
+void main() {
   runApp(const BitCoin());
 }
 
@@ -10,6 +10,8 @@ class BitCoin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  const Network();
+    return const MaterialApp(
+      home: Network(),
+    );
   }
 }

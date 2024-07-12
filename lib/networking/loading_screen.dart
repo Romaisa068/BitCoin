@@ -2,6 +2,10 @@ import 'package:bitcoin/networking/network.dart';
 import 'package:bitcoin/price_screen.dart';
 import 'package:flutter/material.dart';
 
+  const String address = 'https://rest.coinapi.io/v1/exchangerate/BTC';
+
+  const String apikey = '003BE7DD-5BF9-4BB5-B9EE-81C2F1624D8D';
+
 class Network extends StatefulWidget {
   const Network({super.key});
 
@@ -10,24 +14,26 @@ class Network extends StatefulWidget {
 }
 
 class _NetworkState extends State<Network> {
-  final String address = 'https://rest.coinapi.io/v1/exchangerate/BTC';
 
-  final String apikey = '003BE7DD-5BF9-4BB5-B9EE-81C2F1624D8D';
 
   final Uri url = Uri.parse(
-      'https://rest.coinapi.io/v1/exchangerate/BTC/USD?apikey=003BE7DD-5BF9-4BB5-B9EE-81C2F1624D8D');
+      '$address/USD?apikey=$apikey');
 
-  
 
   void getData() async {
     NetworkHelper networkHelper = NetworkHelper(url);
 
+     try {
     var coindata = await networkHelper.getRate();
 
     // ignore: use_build_context_synchronously
     Navigator.push(context, MaterialPageRoute(builder: (context) {
       return PriceScreen(coinrate: coindata);
     }));
+  } catch (e) {
+    // ignore: avoid_print
+    print('Error fetching data: $e');
+  }
   }
 
   @override
@@ -39,15 +45,13 @@ class _NetworkState extends State<Network> {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
+    return  const Scaffold(
         body: Center(
           child: CircularProgressIndicator(
             color: Colors.lightBlue,
           ),
         ), 
-      ),
-    );
+      );
   }
 }
 

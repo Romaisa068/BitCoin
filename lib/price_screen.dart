@@ -5,7 +5,7 @@ import 'coin.dart';
 
 class PriceScreen extends StatefulWidget {
   const PriceScreen({super.key, this.coinrate});
-  
+
   // ignore: prefer_typing_uninitialized_variables
   final dynamic coinrate;
 
@@ -15,7 +15,7 @@ class PriceScreen extends StatefulWidget {
 
 class _PriceScreenState extends State<PriceScreen> {
   String selectedcurrency = 'USD';
-  late int coinprice;
+  late String coinprice;
 
   DropdownButton<String> getdropdownbutton() {
     List<DropdownMenuItem<String>> mennuitem = [];
@@ -54,10 +54,14 @@ class _PriceScreenState extends State<PriceScreen> {
     updateUi(widget.coinrate);
   }
 
-    void updateUi(dynamic data){
-       double rate = data['rate'];
-       coinprice = rate.toInt();
+  void updateUi(dynamic data) {
+    if (data == null) {
+      coinprice = '0';
+      return;
     }
+    double rate = data['rate'];
+    coinprice = rate.toStringAsFixed(0);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,11 +87,11 @@ class _PriceScreenState extends State<PriceScreen> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0),
                 ),
-                child:  Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 28.0, vertical: 15.0),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 28.0, vertical: 15.0),
                   child: Text(
-                    '1BTC = $coinprice USD',
+                    '1BTC = $coinprice $selectedcurrency',
                     textAlign: TextAlign.center,
                     style: const TextStyle(color: Colors.white, fontSize: 26.0),
                   ),
@@ -95,13 +99,13 @@ class _PriceScreenState extends State<PriceScreen> {
               ),
             ),
             Container(
-              height: 150.0,
-              alignment: Alignment.center,
-              color: Colors.lightBlue,
-              padding: const EdgeInsets.only(bottom: 30.0),
-               child:iosPicker()
-              //Platform.isIOS ? iosPicker() : getdropdownbutton(),
-            ),
+                height: 150.0,
+                alignment: Alignment.center,
+                color: Colors.lightBlue,
+                padding: const EdgeInsets.only(bottom: 30.0),
+                child: iosPicker()
+                //Platform.isIOS ? iosPicker() : getdropdownbutton(),
+                ),
           ],
         ),
       ),
